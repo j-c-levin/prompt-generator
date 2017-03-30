@@ -1,0 +1,33 @@
+{
+    "env": {
+        "es6": true,
+        "node": true,
+        "mocha": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "sourceType": "script"
+    },
+    "plugins": [
+        "mocha"
+    ],
+    "rules": {
+        "max-nested-callbacks": 0,
+        "mocha/no-exclusive-tests": "error",
+        "linebreak-style": 0,
+        "strict": 2,
+        "no-console": 0,
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}
