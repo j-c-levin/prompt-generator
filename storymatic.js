@@ -23,6 +23,35 @@ function getRandomInt(min, max) {
 }
 // Module functions
 module.exports = {
+    // Setup readline (this is done first because I need some way of controlling flow)
+    readInPeople: () => {
+        let readPeople = readline.createInterface({
+            input: fs.createReadStream('./peopleCards.txt')
+        });
+        // Read in peopleCards and add to the array
+        readPeople.on('line', (line) => {
+            peopleCards.push(line);
+        });
+        readPeople.on('close', () => {
+            console.log('people cards loaded, total:', peopleCards.length);
+            // Now load in the things cards
+            module.exports.readInThings();
+        });
+    },
+    readInThings: () => {
+        let readThings = readline.createInterface({
+            input: fs.createReadStream('./thingCards.txt')
+        });
+        // Read in thingCards and add to the array
+        readThings.on('line', (line) => {
+            thingCards.push(line);
+        });
+        readThings.on('close', () => {
+            console.log('thing cards loaded, total:', peopleCards.length);
+            // Launch the questions now that cards have been read in
+            module.exports.askQuestion();
+        });
+    },
     getPerson: () => {
         return peopleCards[getRandomInt(0, peopleCards.length - 1)];
     },
@@ -33,33 +62,6 @@ module.exports = {
         inquirer.prompt(questions).then((answers) => {
             let response = (answers.card === 'Person') ? module.exports.getPerson() : module.exports.getThing();
             console.log(`${answers.card} card: ${response}`);
-            module.exports.askQuestion();
-        });
-    },
-    // Setup readline
-    readInPeople: () => {
-        let readPeople = readline.createInterface({
-            input: fs.createReadStream('./peopleCards.txt')
-        });
-        // Read in peopleCards;
-        readPeople.on('line', (line) => {
-            peopleCards.push(line);
-        });
-        readPeople.on('close', () => {
-            console.log('random card from list of', peopleCards.length);
-            module.exports.readInThings();
-        });
-    },
-    readInThings: () => {
-        let readThings = readline.createInterface({
-            input: fs.createReadStream('./thingCards.txt')
-        });
-        // Read in thingCards;
-        readThings.on('line', (line) => {
-            thingCards.push(line);
-        });
-        readThings.on('close', () => {
-            console.log('random card from list of', peopleCards.length);
             module.exports.askQuestion();
         });
     }
